@@ -3,50 +3,47 @@
 
 {% block content %}
 
-	<div class="col-md-7 m-5">
-					<div class="row row-cols-1 g-3" style="margin-left: -300px">
-						<div class="row align-items-center mb-3">
-							<div class="col-md-3">
-								<h3 class="mb-0">Login</h3>
-							</div>
-							<div class="col-md-6">
-								<input class="form-control" type="text" placeholder="Enter login" />
-							</div>
-						</div>
+<div class="container py-5">
+  <div class="col-md-7 mx-auto">
+    <h3 class="mb-4 fw-semibold border-bottom pb-2">Edit Profile</h3>
 
-						<div class="row align-items-center mb-3">
-							<div class="col-md-3">
-								<h3 class="mb-0">Email</h3>
-							</div>
-							<div class="col-md-6">
-								<input class="form-control" type="email" placeholder="Enter email" />
-							</div>
-						</div>
+    <form class="vstack gap-4">
+      <div>
+        <label class="form-label fw-semibold">Login</label>
+        <input type="text" class="form-control" placeholder="Enter login">
+      </div>
 
-						<div class="row align-items-center mb-3">
-							<div class="col-md-3">
-								<h3 class="mb-0">Username</h3>
-							</div>
-							<div class="col-md-6">
-								<input class="form-control" type="text" placeholder="Enter username" />
-							</div>
-						</div>
+      <div>
+        <label class="form-label fw-semibold">Email</label>
+        <input type="email" class="form-control" placeholder="Enter email">
+      </div>
 
-						<div class="row align-items-start mb-3 mt-5">
-							<div class="col-md-3">
-								<h3 class="mb-0">Upload Avatar</h3>
-							</div>
+      <div>
+        <label class="form-label fw-semibold">Username</label>
+        <input type="text" class="form-control" placeholder="Enter username">
+      </div>
 
-							<div class="col-md-6 align-items-start mb-3">
-								<img src="" width="150" height="150" class="me-3" />
-								<div class="d-flex mt-4">
-									<input class="form-control me-2" type="text" placeholder="Filepath" />
-									<a href="#" class="btn btn-secondary btn-lg">Choose</a>
-								</div>
-								<a href="#" class="btn btn-success btn-lg mt-5">Save</a>
-							</div>
-						</div>
-					</div>
-				</div>
+      <div>
+        <label class="form-label fw-semibold">Avatar</label>
+        <div class="d-flex align-items-center gap-3">
+          <img src="{% static 'img/user-avatar.jpg' %}" alt="Avatar" class="rounded border" width="96" height="96" style="object-fit: cover;">
+          <div class="flex-grow-1">
+            <input class="form-control mb-2" type="file" id="avatar" name="avatar">
+			<div class="mt-4">
+				<button 
+					type="submit" 
+					class="btn btn-lg text-white fw-semibold shadow-sm px-4" 
+					style="background-color: #f48024; border-color: #f48024;"
+				>
+					Save
+				</button>
+			</div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
 
 {% endblock %}

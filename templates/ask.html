@@ -1,0 +1,52 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="col-md-7 me-5">
+  <div class="p-3" style="margin-left: -300px; min-height: 1000px;">
+
+    <!-- Title -->
+    <label class="form-label fw-semibold fs-4">Title</label>
+    <input 
+      type="text" 
+      class="form-control mb-3" 
+      placeholder="Enter question title" 
+      style="height: 40px; resize: none;"
+    />
+
+    <!-- Details -->
+    <label class="form-label fw-semibold fs-4 mt-3">Details</label>
+    <textarea 
+      class="form-control mb-4" 
+      rows="6" 
+      placeholder="Add more details" 
+      style="resize: none;"
+    ></textarea>
+
+    <!-- Tags -->
+    <label class="form-label fw-semibold fs-4 mt-4">Tags</label>
+    <input 
+      type="text" 
+      class="form-control mb-3" 
+      placeholder="Enter tags" 
+      style="height: 40px; resize: none;"
+    />
+
+    <!-- Button -->
+    <div class="mt-4">
+      <a 
+        href="#" 
+        class="btn btn-lg text-white fw-semibold" 
+        style="background-color: #f48024; width: 20%;"
+      >
+        Ask
+      </a>
+    </div>
+
+  </div>
+</div>
+
+
+
+{% endblock %}

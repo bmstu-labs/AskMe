@@ -1,0 +1,53 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>AskMe</title>
+
+		<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+		<link rel="stylesheet" href="{% static 'style.css' %}?v=1">
+		<script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+	</head>
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-black bg-white p-5 border-bottom">
+			<div class="container">
+				<h1 class="navbar-brand">AskMe</h1>
+			</div>
+		</nav>
+		<div class="container mt-4">
+			<div class="row">
+				<div class="col-md-7 me-5">
+					{% block content %} 
+
+					{% endblock %}
+				</div>
+				<div class="col-md-4">
+					<h4 class="mb-3 text-start">Popular themes</h4>
+					<div class="d-flex flex-wrap gap-2 mb-4">
+						<a href="#" class="tag-link">Tag-1</a>
+						<a href="#" class="tag-link">Tag-2</a>
+						<a href="#" class="tag-link">Tag-3</a>
+						<a href="#" class="tag-link">Tag-4</a>
+						<a href="#" class="tag-link">Tag-5</a>
+						<a href="#" class="tag-link">Tag-6</a>
+						<a href="#" class="tag-link">Tag-7</a>
+						<a href="#" class="tag-link">Tag-8</a>
+					</div>
+
+					<h2 class="mb-2 text-start">Best members</h2>
+					<div class="d-flex flex-wrap gap-2">
+						<a href="#" class="text">Member-1</a>
+						<a href="#" class="text">Member-2</a>
+						<a href="#" class="text">Member-3</a>
+						<a href="#" class="text">Member-4</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	</body>
+</html>

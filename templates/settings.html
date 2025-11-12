@@ -1,0 +1,52 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block content %}
+
+	<div class="col-md-7 m-5">
+					<div class="row row-cols-1 g-3" style="margin-left: -300px">
+						<div class="row align-items-center mb-3">
+							<div class="col-md-3">
+								<h3 class="mb-0">Login</h3>
+							</div>
+							<div class="col-md-6">
+								<input class="form-control" type="text" placeholder="Enter login" />
+							</div>
+						</div>
+
+						<div class="row align-items-center mb-3">
+							<div class="col-md-3">
+								<h3 class="mb-0">Email</h3>
+							</div>
+							<div class="col-md-6">
+								<input class="form-control" type="email" placeholder="Enter email" />
+							</div>
+						</div>
+
+						<div class="row align-items-center mb-3">
+							<div class="col-md-3">
+								<h3 class="mb-0">Username</h3>
+							</div>
+							<div class="col-md-6">
+								<input class="form-control" type="text" placeholder="Enter username" />
+							</div>
+						</div>
+
+						<div class="row align-items-start mb-3 mt-5">
+							<div class="col-md-3">
+								<h3 class="mb-0">Upload Avatar</h3>
+							</div>
+
+							<div class="col-md-6 align-items-start mb-3">
+								<img src="" width="150" height="150" class="me-3" />
+								<div class="d-flex mt-4">
+									<input class="form-control me-2" type="text" placeholder="Filepath" />
+									<a href="#" class="btn btn-secondary btn-lg">Choose</a>
+								</div>
+								<a href="#" class="btn btn-success btn-lg mt-5">Save</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+{% endblock %}

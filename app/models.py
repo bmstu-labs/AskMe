@@ -1,3 +1,84 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.utils import timezone
 
-# Create your models here.
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=32, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class QuestionManager(models.Manager):
+    def new(self):
+        return self.order_by('-created_at')
+
+    def hot(self):
+        return self.annotate(
+            likes_cnt=models.Count('questionlike')
+        ).order_by('-likes_cnt', '-created_at')
+
+    def by_tag(self, tag_name):
+        return self.filter(tags__name=tag_name).order_by('-created_at')
+
+
+class Question(models.Model):
+    title = models.CharField(max_length=255)
+    text = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
+
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    tags = models.ManyToManyField(Tag, related_name='questions', through='QuestionTag')
+
+    objects = QuestionManager()
+
+    def __str__(self):
+        return self.title
+
+    def get_url(self):
+        return f"/question/{self.id}/"
+
+
+class QuestionTag(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('question', 'tag')
+
+
+class Answer(models.Model):
+    text = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
+
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
+
+    def __str__(self):
+        return f"Answer #{self.id} to Q{self.question_id}"
+
+
+class QuestionLike(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'question')
+
+
+class AnswerLike(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'answer')

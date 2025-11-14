@@ -1,39 +1,28 @@
-from django.shortcuts import render
-from django.core.paginator import Paginator
+from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import Http404
 
-QUESTIONS = [
-    {
-        'id': i,
-        'title': f'Title #{i}',
-        'text': 'Random text'
-    } 
-    for i in range(1, 31)
-]
+from .models import Question
 
-ANSWERS = [
-    {
-        'id': i + 1,
-        'username': f'User #{i + 1}',
-        'text': 'Answer Text',
-    } 
-    for i in range(30)
-]
+ANSWERS = []
 
 
-def paginate(request, objects, per_page = 5):
-    page_number = int(request.GET.get('page', 1))
-    
+def paginate(request, objects, per_page=5):
     paginator = Paginator(objects, per_page)
-    page = paginator.page(page_number)
+    page_number = request.GET.get('page', 1)
+
+    try:
+        page = paginator.page(page_number)
+    except PageNotAnInteger:
+        page = paginator.page(1)
+    except EmptyPage:
+        page = paginator.page(paginator.num_pages)
 
     return page
 
 
 def question(request, question_id: int):
-    question = next((q for q in QUESTIONS if q['id'] == question_id), None)
-    if question is None:
-        raise Http404()
+    question = get_object_or_404(Question, pk=question_id)
         
     answers_page = paginate(request, ANSWERS)
     
@@ -49,7 +38,8 @@ def question(request, question_id: int):
 
 
 def questions(request):
-    questions_page = paginate(request, QUESTIONS)
+    questions = Question.objects.new()
+    questions_page = paginate(request, questions)
 
     return render(
         request=request,
@@ -62,7 +52,9 @@ def questions(request):
 
 
 def hot(request):
-    questions_page = paginate(request, QUESTIONS[:5][::-1])
+    questions = Question.objects.best()
+
+    questions_page = paginate(request, questions)
 
     return render(
         request=request,
@@ -97,6 +89,6 @@ def settings(request):
 
 def ask(request):
     return render(
-        request=ask,
+        request=request,
         template_name='ask.html'
     )

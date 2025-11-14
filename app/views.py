@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import Http404
+from typing import List
 
-from .models import Question
+from .models import Question, Tag
 
 ANSWERS = []
 
@@ -30,6 +31,7 @@ def question(request, question_id: int):
         request=request,
         template_name='question.html',
         context={
+            'tags': get_top_n_tags(),
             'question': question,
             'answers': answers_page.object_list,
             'page_obj': answers_page
@@ -38,13 +40,14 @@ def question(request, question_id: int):
 
 
 def questions(request):
-    questions = Question.objects.new()
+    questions = Question.objects.all()
     questions_page = paginate(request, questions)
 
     return render(
         request=request,
         template_name='questions.html',
         context={
+            'tags': get_top_n_tags(),
             'questions': questions_page.object_list,
             'page_obj': questions_page
         }
@@ -52,14 +55,14 @@ def questions(request):
 
 
 def hot(request):
-    questions = Question.objects.best()
-
+    questions = Question.objects.all()
     questions_page = paginate(request, questions)
 
     return render(
         request=request,
         template_name='hot.html',
         context={
+            'tags': get_top_n_tags(),
             'questions': questions_page.object_list,
             'page_obj': questions_page
         }
@@ -91,4 +94,28 @@ def ask(request):
     return render(
         request=request,
         template_name='ask.html'
+    )
+
+
+def get_top_n_tags(n: int = 5) -> List[Tag]:
+    tags = Tag.objects.all()
+    return tags[:n]
+
+
+def tag(request, tag: str):
+    tag_obj = get_object_or_404(Tag, name=tag)
+
+    questions = Question.objects.filter(tags=tag_obj).order_by('-created_at')
+
+    questions_page = paginate(request, questions)
+
+    return render(
+        request=request,
+        template_name='tag.html',
+        context={
+            'tags': get_top_n_tags(),
+            'tag_name': tag_obj.name,
+            'questions': questions_page.object_list,
+            'page_obj': questions_page
+        }
     )

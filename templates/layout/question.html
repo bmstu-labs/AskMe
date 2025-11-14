@@ -19,8 +19,9 @@
       <div class="d-flex flex-wrap gap-2 align-items-center">
         <a href="#" class="btn btn-outline-orange btn-sm">Answers (3)</a>
         <div class="footer__tags">
-          <a href="#" class="text-decoration-none me-2 text-muted">tag-1</a>
-          <a href="#" class="text-decoration-none text-muted">tag-2</a>
+          {% for tag in tags %}
+            <a href="{% url 'tag' tag.name%}" class="text-decoration-none me-2 text-muted">{{ tag.name }}</a>
+          {% endfor %}
         </div>
       </div>
     </div>

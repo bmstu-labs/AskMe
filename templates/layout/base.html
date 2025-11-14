@@ -47,14 +47,9 @@
 				<div class="col-md-4">
 					<h4 class="mb-3 text-start">Popular themes</h4>
 					<div class="d-flex flex-wrap gap-2 mb-4">
-						<a href="#" class="tag-link">Tag-1</a>
-						<a href="#" class="tag-link">Tag-2</a>
-						<a href="#" class="tag-link">Tag-3</a>
-						<a href="#" class="tag-link">Tag-4</a>
-						<a href="#" class="tag-link">Tag-5</a>
-						<a href="#" class="tag-link">Tag-6</a>
-						<a href="#" class="tag-link">Tag-7</a>
-						<a href="#" class="tag-link">Tag-8</a>
+						{% for tag in tags %}
+						<a href="{% url 'tag' tag.name %}" class="tag-link">{{ tag.name }}</a>
+						{% endfor %}
 					</div>
 
 					<h2 class="mb-2 text-start">Best members</h2>

@@ -1,0 +1,20 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+<h2 class="text-start mb-4">
+    Tags: <span class="text-primary">{{ tag_name }}</span>
+</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        {% for question in questions %}
+            {% include "layout/question.html" with q=question %}
+        {% empty %}
+            <p class="fs-4 text-muted">No questions</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% include "layout/paginator.html" %}
+
+{% endblock %}

@@ -8,7 +8,6 @@ import random
 class Command(BaseCommand):
     help = 'Fill DB with test data: python manage.py fill_db [ratio]'
 
-
     def add_arguments(self, parser):
         parser.add_argument('ratio', type=int, nargs='?', default=1)
 
@@ -20,9 +19,8 @@ class Command(BaseCommand):
         num_tags = ratio
         num_likes = ratio * 200
 
-        self.stdout.write('Filling DB (this may take a while)...')
+        self.stdout.write('Filling DB...')
 
-        # Создаём пользователей батчами
         users = []
         for i in range(0, num_users):
             users.append(User(username=f'user{i}', email=f'user{i}@example.com'))
@@ -30,13 +28,11 @@ class Command(BaseCommand):
 
         users_qs = list(User.objects.all()[:num_users])
 
-        # Теги
         tags = [Tag(name=f'tag{i}') for i in range(1, num_tags+1)]
         Tag.objects.bulk_create(tags)
 
         tags_qs = list(Tag.objects.all()[:num_tags])
 
-        # Questions
         questions = []
         for i in range(0, num_questions):
             author = random.choice(users_qs)
@@ -49,7 +45,6 @@ class Command(BaseCommand):
 
         questions_qs = list(Question.objects.all()[:num_questions])
 
-        # Answers
         answers = []
         for i in range(0, num_answers):
             author = random.choice(users_qs)
@@ -68,12 +63,10 @@ class Command(BaseCommand):
             value = random.choice([QuestionLike.LIKE, QuestionLike.DISLIKE])
             likes.append(QuestionLike(user=user, question=question, value=value))
 
-            # Батч вставка каждые 1000 объектов
             if len(likes) >= 1000:
                 QuestionLike.objects.bulk_create(likes, ignore_conflicts=True)
                 likes = []
 
-        # Вставляем оставшиеся лайки
         if likes:
             QuestionLike.objects.bulk_create(likes, ignore_conflicts=True)
 

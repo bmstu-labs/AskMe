@@ -3,7 +3,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import Http404
 from typing import List
 
-from .models import Question, Tag
+from .models import Question, Tag, Answer
 
 ANSWERS = []
 
@@ -22,16 +22,21 @@ def paginate(request, objects, per_page=5):
     return page
 
 
+def getAnswers(q: Question):
+    return Answer.objects.filter(question=q)
+
+
 def question(request, question_id: int):
     question = get_object_or_404(Question, pk=question_id)
-        
-    answers_page = paginate(request, ANSWERS)
+
+    answers = getAnswers(question)
+    answers_page = paginate(request, answers)
     
     return render(
         request=request,
         template_name='question.html',
         context={
-            'tags': get_top_n_tags(),
+            'tags': getTopNTags(),
             'question': question,
             'answers': answers_page.object_list,
             'page_obj': answers_page
@@ -39,30 +44,30 @@ def question(request, question_id: int):
     )
 
 
-def questions(request):
-    questions = Question.objects.all()
+def newQuestions(request):
+    questions = Question.objects.new()
     questions_page = paginate(request, questions)
 
     return render(
         request=request,
         template_name='questions.html',
         context={
-            'tags': get_top_n_tags(),
+            'tags': getTopNTags(),
             'questions': questions_page.object_list,
             'page_obj': questions_page
         }
     )
 
 
-def hot(request):
-    questions = Question.objects.all()
+def hotQuestions(request):
+    questions = Question.objects.hot()
     questions_page = paginate(request, questions)
 
     return render(
         request=request,
         template_name='hot.html',
         context={
-            'tags': get_top_n_tags(),
+            'tags': getTopNTags(),
             'questions': questions_page.object_list,
             'page_obj': questions_page
         }
@@ -97,7 +102,7 @@ def ask(request):
     )
 
 
-def get_top_n_tags(n: int = 5) -> List[Tag]:
+def getTopNTags(n: int = 5) -> List[Tag]:
     tags = Tag.objects.all()
     return tags[:n]
 
@@ -113,7 +118,7 @@ def tag(request, tag: str):
         request=request,
         template_name='tag.html',
         context={
-            'tags': get_top_n_tags(),
+            'tags': getTopNTags(),
             'tag_name': tag_obj.name,
             'questions': questions_page.object_list,
             'page_obj': questions_page

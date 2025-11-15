@@ -1,5 +1,9 @@
-<div class="card mb-3">
+<div class="card mb-3 position-relative">
   <div class="card-body d-flex align-items-start gap-3">
+
+    <div class="position-absolute top-0 end-0 p-2 text-muted" style="font-size: 0.9rem;">
+      by {{ q.author.username }}
+    </div>
 
     <div class="text-center" style="width: 60px;">
       <div class="border rounded py-2 mb-2">
@@ -10,20 +14,24 @@
 
     <div class="flex-grow-1">
       <h5 class="card-title mb-1">
-        <a href="{% url 'question' question.id %}" class="text-decoration-none text-dark fw-semibold">
+        <a href="{% url 'question' q.id %}" class="text-decoration-none text-dark fw-semibold">
           {{ q.title }}
         </a>
       </h5>
+
       <p class="card-text mb-2">{{ q.text }}</p>
 
       <div class="d-flex flex-wrap gap-2 align-items-center">
         <a href="#" class="btn btn-outline-orange btn-sm">Answers (3)</a>
         <div class="footer__tags">
           {% for tag in tags %}
-            <a href="{% url 'tag' tag.name%}" class="text-decoration-none me-2 text-muted">{{ tag.name }}</a>
+            <a href="{% url 'tag' tag.name %}" class="text-decoration-none me-2 text-muted">
+              {{ tag.name }}
+            </a>
           {% endfor %}
         </div>
       </div>
     </div>
+
   </div>
 </div>

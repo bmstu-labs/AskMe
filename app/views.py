@@ -5,8 +5,6 @@ from typing import List
 
 from .models import Question, Tag, Answer
 
-ANSWERS = []
-
 
 def paginate(request, objects, per_page=5):
     paginator = Paginator(objects, per_page)

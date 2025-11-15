@@ -24,7 +24,7 @@ class QuestionManager(models.Manager):
 
     def hot(self):
         return self.annotate(
-            likes_cnt=models.Count('questionlike')
+            likes_cnt=models.Count('likes')
         ).order_by('-likes_cnt', '-created_at')
 
     def by_tag(self, tag_name):

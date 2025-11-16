@@ -1,4 +1,4 @@
-# management/commands/fill_db.py
+# management/commands/filldb.py
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from django.db import transaction
@@ -6,7 +6,7 @@ from app.models import Question, Answer, Tag, QuestionLike, AnswerLike, Profile
 import random
 
 class Command(BaseCommand):
-    help = 'Fill DB with test data: python manage.py fill_db [ratio]'
+    help = 'Fill DB with test data: python manage.py filldb [ratio]'
 
     def add_arguments(self, parser):
         parser.add_argument('ratio', type=int, nargs='?', default=1)
@@ -27,6 +27,9 @@ class Command(BaseCommand):
         User.objects.bulk_create(users, batch_size=1000)
 
         users_qs = list(User.objects.all()[:num_users])
+
+        profiles = [Profile(user=u) for u in users_qs]
+        Profile.objects.bulk_create(profiles, batch_size=1000)
 
         tags = [Tag(name=f'tag{i}') for i in range(1, num_tags+1)]
         Tag.objects.bulk_create(tags)

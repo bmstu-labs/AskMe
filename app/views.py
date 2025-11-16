@@ -25,9 +25,9 @@ def getAnswers(q: Question):
 
 
 def question(request, question_id: int):
-    question = get_object_or_404(Question, pk=question_id)
+    q = get_object_or_404(Question, pk=question_id)
 
-    answers = getAnswers(question)
+    answers = getAnswers(q)
     answers_page = paginate(request, answers)
     
     return render(
@@ -35,7 +35,7 @@ def question(request, question_id: int):
         template_name='question.html',
         context={
             'tags': getTopNTags(),
-            'question': question,
+            'question': q,
             'answers': answers_page.object_list,
             'page_obj': answers_page
         }
@@ -105,8 +105,8 @@ def getTopNTags(n: int = 5) -> List[Tag]:
     return tags[:n]
 
 
-def tag(request, tag: str):
-    tag_obj = get_object_or_404(Tag, name=tag)
+def tag(request, tagName: str):
+    tag_obj = get_object_or_404(Tag, name=tagName)
 
     questions = Question.objects.filter(tags=tag_obj).order_by('-created_at')
 
